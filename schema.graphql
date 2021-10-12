@@ -301,6 +301,29 @@ type Network {
   nativeCurrency: String!
 }
 
+type Nft {
+  amount: Int!
+  image: String
+  name: String
+  tokenId: Int!
+}
+
+type NftCollection {
+  balance: Float!
+  contractAddress: String!
+  contractName: String
+  contractSymbol: String
+  items: [Nft!]!
+  tokenType: TokenTypes!
+}
+
+type NftList {
+  currentPage: Int!
+  items: [NftCollection!]!
+  nextPage: Int
+  total: Int
+}
+
 type Notification {
   payload: JSONObject
   recipient: String!
@@ -313,7 +336,7 @@ type OpenSeaAsset {
   imagePreviewUrl: String
   imageUrl: String
   name: String
-  tokenId: String!
+  tokenId: Int!
 }
 
 type OpenSeaAssetAccount {
@@ -532,6 +555,7 @@ type Query {
   getContractAbi(address: String!, chainId: Int): JSONObject
   isTokenOnTokenList(chainId: Int, name: String, token: String!): Boolean!
   nativeCurrencies: NativeCurrencies!
+  nftList(account: String!, chainId: Int): NftList!
   p2pPaymentChannel(chainId: Int, hash: String!): P2PPaymentChannel
   p2pPaymentChannelPayments(chainId: Int, channel: String!, limit: Int = 10, page: Int = 1): P2PPaymentChannelPayments!
   p2pPaymentChannels(chainId: Int, limit: Int = 10, page: Int = 1, senderOrRecipient: String!, token: String, uncommittedOnly: Boolean): P2PPaymentChannels!
@@ -616,6 +640,7 @@ type Transaction {
   internalTransactionsFetched: Boolean!
   logs: JSONObject
   logsBloom: String
+  logsTrimmed: Boolean
   mainTransactionDataFetched: Boolean!
   nonce: Float
   status: TransactionStatuses
@@ -837,6 +862,7 @@ enum ProjectStates {
 }
 
 enum TokenTypes {
+  Erc1155
   Erc20
   Erc721
   Native
